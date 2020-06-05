@@ -1,57 +1,76 @@
 /* Global(s,) Variables */
 :root {
+	/* Der Platz, der oben an der Seite gelassen werden soll */
 	--top-padding: 10vh;
+	/* Textfarbe. Nicht Schwarz fuer einen weniger radikalen Kontrast */
 	--text-color: #333;
+	/* Abstand, den das Haupt-Content links und rechts zusaetzlich zu Padding halten soll. Sorgt fuer variable Abstaende je nach Bildschirmgroesse */
 	--content-margin: 5%;
+	/* Maximalbreite des Contents fuer optimale Lesbarkeit */
 	--max-content-width: 700px;
-	--background-image-dimm: .3;
+	/* Transparenz des Overlays ueber das Hintergrundbild in der Seitenleiste. Je hoeher, desto verdunkelter. Sorgt fuer genug Kontrast */
+	--background-image-dimm: .4;
+	/* Breite der Seitenleiste */
 	--sidebar-width: 300px;
+	/* Anteil des Seitenleisteninhalts an diesem Platz */
 	--sidebar-content-width: 85%;
+	/* Textfarbe in der Seitenleiste */
 	--sidebar-text-color: white;
+	/* Dokumentweite Schriftart- und Gewicht */
 	font-family: 'Rubik', sans-serif;
 	font-weight: 300;
+
 	color: var(--text-color);
 }
 h1, h2, h3, h4 {
+	/* Schwarze Ueberschriften zum Herausheben aus normalem Text */
 	color: black;
 }
 img {
+	/* Anstelle von inline-block */
 	display: block;
 }
+/* Sorgt dafuer, dass Padding und Borders fuer width und height mit beruecksichtigt werden. Erspart eine Menge Kopfschmerzen */
 * { box-sizing: border-box; }
 /* End Global Variables and Imports */
 
 
 /* General Layout Setup */
 body {
+	/* Entfernen des Standardabstands */
 	margin: 0;
 	padding: 0;
 }
 #wrapper {
+	/* Links Platz lassen fuer die out-of-flow Seitenleiste */
 	margin-left: var(--sidebar-width);
 }
 
 main, #sidebar {
+	/* Oben deklarierten Platz lassen */
 	padding-top: var(--top-padding);
 }
 
 main {
+	/* Content Margin von oben nutzen */
 	margin: 0 var(--content-margin);
 }
 @media only screen and (max-width: 1000px) {
 	:root {
+		/* Auf kleineren Bildschirmen soll die Seitenleiste sich nach der Bildschirmgroesse richten */
 		--sidebar-width: 30%;
 	}
 }
 @media only screen and (max-width: 850px) {
 	:root {
+		/* Auf noch kleineren Bildschirmen Schriftgroesse und Abstand anpassen */
 		font-size: .9rem;
 		--content-margin: 2%;
 	}
 	#wrapper {
+		/* Seitenleiste ist jetzt nach oben verschoben */
 		margin-left: 0;
 		margin-top: 7rem;
-		display: block;
 	}
 	#sidebar {
 		padding-top: 1rem;
@@ -66,23 +85,33 @@ main {
 
 /* Sidebar Styling */
 #sidebar {
+	/* Relativ zum Viewport und out-of-flow */
 	position: fixed;
 	top: 0;
 	left: 0;
+	/* Komplette Bildschirmhoehe einnehmen */
 	height: 100vh;
 
+	/* Oben festgelegte Breite einsetzen */
 	width: var(--sidebar-width);
 
 	padding-right: .6rem;
 	padding-left: .6rem;
 
+	/* Markieren von Text verbieten */
 	user-select: none;
 
+	/* Hintergrundbild mit Gradient als Overlay einsetzen. Hack fuer das Dimmen */
 	background: linear-gradient(rgba(0, 0, 0, var(--background-image-dimm)), rgba(0, 0, 0, var(--background-image-dimm))), url('https://www.publicdomainpictures.net/pictures/310000/velka/tempelhof-airport-berlin.jpg');
 	background-size: cover;
+	/* Verschieben des Hintergrundes zu einer interessanteren Stelle (mit Flugzeug) */
 	background-position: -110% top;
+
+	color: var(--sidebar-text-color);
 }
+/* Pseudoelement fuer das Ueberdecken des Hintergrundes beim Scrollen auf schmalen Bildschirmen. Hintergrundveraenderungen kann man nicht animieren, daher das Pseudoelement */
 #sidebar::before {
+	/* Element ueberdeckt Parent vollstaendig */
 	display: block;
 	content: "";
 	position: absolute;
@@ -90,12 +119,16 @@ main {
 	left: 0;
 	width: 100%;
 	height: 100%;
+	/* Sicherstellen, dass Mausevents nicht blockiert werden */
 	pointer-events: none;
 	background-color: white;
+	/* Zunaechst verstecken */
 	opacity: 0;
 	z-index: -1;
-	transition: .4s;
+	/* Animationsdauer fuer Einblenden*/
+	transition: opacity .4s;
 }
+/* Sidebarinhalt Rechtsbuendig und responsive anordnen */
 #sidebar > header {
 	width: var(--sidebar-content-width);
 	margin: 0 auto;
@@ -106,6 +139,7 @@ main {
 	text-align: right;
 }
 #sidebar > header > span {
+	/* Margin, um header bei oben Positionierter Sidebar mittiger zu druecken */
 	margin-left: calc(1.5rem + 5%);
 	opacity: .7;
 }
@@ -113,9 +147,12 @@ main {
 	font-size: 1.7rem;
 }
 #sidebar ul {
+	/* Flex-Column mit rechtsbuendiger Anordnung */
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
+
+	list-style: none;
 
 	padding: 0;
 	margin: 0;
@@ -124,15 +161,13 @@ main {
 	margin: 0 auto;
 }
 #sidebar * {
-	transition: .2s;
-	color: var(--sidebar-text-color);
+	color: inherit;
 }
 
 /* Sidebar Styling > Nav Entry Styling */
 .nav-entry {
 	margin: 1.3rem 0;
-	list-style: none;
-	transition: .3s;
+	transition: opacity .3s;
 	opacity: .7;
 }
 .nav-entry > a {
@@ -140,34 +175,43 @@ main {
 	text-decoration: none;
 }
 .nav-entry:hover, .nav-entry.active {
+	/* Aktive und mit der Maus in beruehrung stehende Elemente hervorheben */
 	opacity: 1;
 }
+/* Animierbare Unterstreichung der Links */
 .nav-entry::after {
 	display: block;
 	content: "";
 	background-color: var(--sidebar-text-color);
+	/* Zunaechst nicht zu sehen */
 	height: 1px;
 	width: 0px;
+	/* Animationsdauer fuer "Ausfahren" */
 	transition: width .2s;
+	/* Rechtsbuendig */
 	margin-left: auto;
 }
 .nav-entry:hover::after, .nav-entry.active::after {
+	/* Bei hervorgehobenen Elementen "ausfahren" */
 	width: 100%;
 }
 /* End Sidebar Styling > Nav Entry Styling */
 
 @media only screen and (max-width: 850px) {
 	#sidebar {
+		/* Hoehe von 100vh zurueck auf auto setzen */
 		height: auto;
+		/* Komplette Breite einnehmen */
 		width: 100%;
-		max-width: none;
 		padding: .8rem 0;
 	}
 	#sidebar > header > * {
+		/* Headerelemente nebeneinander anzeigen */
 		display: inline-block;
 		margin-bottom: 0;
 	}
-	#sidebar > nav > ul {
+	#sidebar ul {
+		/* Links nebeneinander anzeigen */
 		flex-direction: row;
 		justify-content: space-around;
 		width: auto;
@@ -180,10 +224,12 @@ main {
 		margin: 0 auto;
 	}
 	.scrolled #sidebar {
+		/* Bei Scrollen die Textfarbe auf Schwarz umstellen und einen Schatten hinzufuegen */
 		--sidebar-text-color: var(--text-color);
 		box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.4);
 	}
 	.scrolled #sidebar::before {
+		/* Bei Scrollen den Hintergrund ueberdecken */
 		opacity: 1;
 	}
 }
@@ -193,11 +239,12 @@ main {
 /* Main Content Container Styling */
 #content-wrapper {
 	max-width: var(--max-content-width);
-	margin-bottom: 2rem;
+	margin-bottom: 1rem;
 }
 
 @media only screen and (max-width: 850px) {
 	#content-wrapper {
+		/* Content auf schmalen Bildschirmen zentrieren */
 		margin: 0 auto;
 		padding: 0 1.5rem;
 	}
@@ -218,6 +265,7 @@ main {
 	font-size: 1.2em;
 }
 #content-wrapper img {
+	/* Sicherstellen, dass Bilder keinen Overflow verursachen */
 	width: 100%;
 }
 .caption {
@@ -225,24 +273,30 @@ main {
 	margin-bottom: 2rem;
 }
 .flex-row {
+	/* Klasse, um Dinge (z. B. ein Bild und eine Caption) nebeneinander anzuordnen */
 	display: flex;
 	justify-content: space-between;
 }
 .flex-row > * {
+	/* Alle nebeneinander positionierten Elemente sind erst einmal gleich breit */
 	flex: 1;
 }
 .flex-row > :not(:last-child) {
+	/* Abstand zwischen nebeneinander positionierten Elementen */
 	margin-right: 2rem;
 }
 
+/* "//" Text in der Byline */
 .separator {
 	font-weight: bold;
 }
 .byline {
 	margin-top: .3rem;
+	/* Hellerer Text in der Byline */
 	color: #ccc;
 }
 .byline > .author {
+	/* Autornamen hervorheben */
 	color: rgb(236, 44, 163);
 	font-weight: bold;
 }
@@ -250,9 +304,11 @@ main {
 
 @media only screen and (max-width: 500px) {
 	.flex-row > * {
+		/* Abstand entfernen */
 		margin-right: 0;
 	}
 	.flex-row {
+		/* Flex entfernen */
 		display: block;
 	}
 }
@@ -261,9 +317,11 @@ main {
 
 /* Start Footer Styling */
 footer {
+	/* Relativ zum Viewport in der linken unteren Ecke */
 	position: fixed;
 	left: 0;
 	bottom: 0;
+	/* Wie ein Teil der Seitenleiste aussehen lassen */
 	text-align: right;
 	color: var(--sidebar-text-color);
 	width: var(--sidebar-width);
@@ -276,16 +334,17 @@ footer > div {
 
 @media only screen and (max-width: 850px) {
 	footer {
+		/* Vorherige Positionierung zuruecknehmen */
 		max-width: none;
 		position: static;
 		width: auto;
-		margin: 0 auto;
 		padding: 1.3rem 0;
+		/* Vor jetzt weissem Hintergrund lesbar machen */
 		color: #666;
 		text-align: center;
 	}
 	footer > div {
-		width: auto;
+		max-width: none;
 	}
 }
 /* End Start Footer Styling */
