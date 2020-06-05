@@ -3,10 +3,9 @@
 	--top-padding: 10vh;
 	--text-color: #333;
 	--content-margin: 5%;
-	--max-content-width: 800px;
+	--max-content-width: 700px;
 	--background-image-dimm: .3;
-	--sidebar-width: 34vw;
-	--sidebar-max-width: 300px;
+	--sidebar-width: 300px;
 	--sidebar-content-width: 85%;
 	--sidebar-text-color: white;
 	font-family: 'Rubik', sans-serif;
@@ -29,8 +28,7 @@ body {
 	padding: 0;
 }
 #wrapper {
-	display: flex;
-	min-height: 100vh;
+	margin-left: var(--sidebar-width);
 }
 
 main, #sidebar {
@@ -40,8 +38,12 @@ main, #sidebar {
 main {
 	margin: 0 var(--content-margin);
 }
-
-@media only screen and (max-width: 950px) {
+@media only screen and (max-width: 1000px) {
+	:root {
+		--sidebar-width: 30%;
+	}
+}
+@media only screen and (max-width: 850px) {
 	:root {
 		font-size: .9rem;
 		--content-margin: 2%;
@@ -65,18 +67,18 @@ main {
 
 /* Sidebar Styling */
 #sidebar {
-	position: sticky;
+	position: fixed;
 	top: 0;
+	left: 0;
 	height: 100vh;
 
 	width: var(--sidebar-width);
-	max-width: var(--sidebar-max-width);
 
 	display: flex;
 	flex-direction: column;
 
-	padding-right: 1rem;
-	padding-left: 1rem;
+	padding-right: .6rem;
+	padding-left: .6rem;
 
 	user-select: none;
 
@@ -158,12 +160,10 @@ main {
 }
 /* End Sidebar Styling > Nav Entry Styling */
 
-@media only screen and (max-width: 950px) {
+@media only screen and (max-width: 850px) {
 	#sidebar {
 		width: auto;
 		height: auto;
-		position: fixed;
-		top: 0;
 		width: 100%;
 		max-width: none;
 		padding: .8rem 0;
@@ -198,12 +198,12 @@ main {
 /* Main Content Container Styling */
 #content-wrapper {
 	max-width: var(--max-content-width);
-	margin: 0 auto;
 	margin-bottom: 2rem;
 }
 
-@media only screen and (max-width: 950px) {
+@media only screen and (max-width: 850px) {
 	#content-wrapper {
+		margin: 0 auto;
 		padding: 0 1.5rem;
 	}
 }
@@ -272,7 +272,6 @@ footer {
 	text-align: right;
 	color: var(--sidebar-text-color);
 	width: var(--sidebar-width);
-	max-width: var(--sidebar-max-width);
 	opacity: .8;
 }
 footer > div {
@@ -280,16 +279,14 @@ footer > div {
 	margin: 0 auto;
 }
 
-@media only screen and (max-width: 950px) {
+@media only screen and (max-width: 850px) {
 	footer {
 		max-width: none;
 		position: static;
 		width: auto;
 		margin: 0 auto;
 		padding: 1.3rem 0;
-
-		color: #999;
-		background-color: #111;
+		color: #666;
 		text-align: center;
 	}
 	footer > div {
